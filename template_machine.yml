@@ -1,0 +1,7 @@
+---
+- import_playbook: deploy_authorized_keys.yml
+- import_playbook: disable_ssh_password_login.yml
+- import_playbook: change_default_cockpit_port.yml
+# - import_playbook: install_prometheus_monitoring.yml
+# - import_playbook: setup_prometheus_monitoring_server.yml
+- import_playbook: update_server.yml

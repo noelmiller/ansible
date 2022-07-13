@@ -1,0 +1,23 @@
+---
+- hosts: vms, !workstations
+  tasks:
+  - name: Install EPEL-Release (RHEL)
+    yum:
+      name: https://dl.fedoraproject.org/pub/epel/epel-release-latest-8.noarch.rpm
+      state: present
+      disable_gpg_check: yes
+    when: ansible_distribution == "RedHat" and ansible_distribution_major_version == "8"
+  - name: Install EPEL-Release (Alma)
+    yum:
+      name: "epel-release"
+      state: latest
+  - name: Install Mosh
+    yum:
+      name: 'mosh'
+      state: latest
+  - name: Update Firewall
+    firewalld:
+      port: 60000-61000/udp
+      permanent: yes
+      immediate: yes
+      state: enabled

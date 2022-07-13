@@ -1,0 +1,41 @@
+---
+- hosts: monitor
+  tasks:
+  - name: Add repository
+    yum_repository:
+      name: prometheus
+      description: Prometheus Yum Repo
+      baseurl: "https://packagecloud.io/prometheus-rpm/release/el/$releasever/$basearch"
+      gpgcheck: yes
+      gpgkey: 
+        - "https://packagecloud.io/prometheus-rpm/release/gpgkey"
+        - "https://raw.githubusercontent.com/lest/prometheus-rpm/master/RPM-GPG-KEY-prometheus-rpm"
+      metadata_expire: 300
+  - name: Install Prometheus and Node Exporter
+    yum:
+      name: 'prometheus2'
+      state: latest
+  - name: Enable Service (Prometheus)
+    systemd:
+      state: started
+      daemon_reload: yes
+      enabled: yes
+      name: prometheus.service
+  - name: Update Firewall (9090)
+    firewalld:
+      port: 9090/tcp
+      permanent: yes
+      immediate: yes
+      state: enabled
+  - name: Add Inventory to Config File
+    vars:
+      servers_to_monitor: "{{ groups['vms'] }}"
+    template: 
+      src: prometheus_server.yml.j2
+      dest: /etc/prometheus/prometheus.yml
+  - name: Restart Service (Prometheus)
+    systemd:
+      state: restarted
+      daemon_reload: yes
+      enabled: yes
+      name: prometheus.service

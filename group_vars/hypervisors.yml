@@ -1,0 +1,19 @@
+---
+api_user: "root@pam"
+api_password: "{{ pve_api_password }}"
+api_host: "pve"
+snapname: "pre-updates"
+vms:
+  - 100
+  - 101
+  - 102
+  - 103
+  - 104
+  - 106
+  - 107
+  - 108
+  - 109
+  - 110
+  - 111
+  - 300
+  - 400

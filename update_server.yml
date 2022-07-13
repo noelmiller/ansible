@@ -1,0 +1,12 @@
+---
+- hosts: automatic-updates
+  #strategy: free
+  tasks:
+  - name: Upgrade all packages
+    yum:
+      name: '*'
+      state: latest
+    register: yum
+  - name: Reboot
+    reboot:
+    when: yum.changed
