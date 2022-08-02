@@ -1,5 +1,5 @@
 ---
-- hosts: appservers
+- hosts: dockerservers
   tasks:
   - name: Add repository
     yum_repository:
