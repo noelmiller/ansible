@@ -13,7 +13,7 @@ dashboard.henrymillerfrazier.lan
 budget.henrymillerfrazier.lan
 grocy.henrymillerfrazier.lan
 proxy02.henrymillerfrazier.lan
-journal.henrymillerfrazier.lan
+auth.henrymillerfrazier.lan
 ansible.henrymillerfrazier.lan
 
 [dockerservers]
@@ -23,6 +23,7 @@ wiki.henrymillerfrazier.lan
 dashboard.henrymillerfrazier.lan
 proxy02.henrymillerfrazier.lan
 ansible.henrymillerfrazier.lan
+auth.henrymillerfrazier.lan
 
 [infra]
 unifi.henrymillerfrazier.lan
@@ -66,3 +67,4 @@ automation
 webservers
 workstations
 templates
+dockerservers
