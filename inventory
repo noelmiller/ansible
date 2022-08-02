@@ -1,3 +1,5 @@
+ansible.henrymillerfrazier.lan ansible_python_interpreter=/usr/libexec/platform-python
+
 [templates]
 template.henrymillerfrazier.lan
 
@@ -12,6 +14,15 @@ budget.henrymillerfrazier.lan
 grocy.henrymillerfrazier.lan
 proxy02.henrymillerfrazier.lan
 journal.henrymillerfrazier.lan
+ansible.henrymillerfrazier.lan
+
+[dockerservers]
+torrent.henrymillerfrazier.lan
+unifi.henrymillerfrazier.lan
+wiki.henrymillerfrazier.lan
+dashboard.henrymillerfrazier.lan
+proxy02.henrymillerfrazier.lan
+ansible.henrymillerfrazier.lan
 
 [infra]
 unifi.henrymillerfrazier.lan
