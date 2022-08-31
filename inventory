@@ -10,8 +10,6 @@ torrent.henrymillerfrazier.lan
 git.henrymillerfrazier.lan
 wiki.henrymillerfrazier.lan
 dashboard.henrymillerfrazier.lan
-budget.henrymillerfrazier.lan
-grocy.henrymillerfrazier.lan
 proxy02.henrymillerfrazier.lan
 auth.henrymillerfrazier.lan
 ansible.henrymillerfrazier.lan
@@ -31,7 +29,6 @@ proxy02.henrymillerfrazier.lan
 monitor.henrymillerfrazier.lan
 dashboard.henrymillerfrazier.lan
 log.henrymillerfrazier.lan
-wazuh.henrymillerfrazier.lan
 teleport.henrymillerfrazier.com
 
 [monitor]
@@ -45,9 +42,6 @@ blog.henrymillerfrazier.lan
 
 [hypervisors]
 pve.henrymillerfrazier.lan
-
-[workstations]
-dev.henrymillerfrazier.lan
 
 [automatic-updates:children]
 appservers
