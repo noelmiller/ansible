@@ -1,7 +1,7 @@
 ---
 api_user: "root@pam"
 api_password: "{{ pve_api_password }}"
-api_host: "pve"
+api_host: "pve02"
 snapname: "pre-updates"
 vms:
   - 100
