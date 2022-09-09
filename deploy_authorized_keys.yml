@@ -5,12 +5,21 @@
     file:
       path: "/root/.ssh"
       state: directory
+      owner: root
+      mode: 0700
   - name: create empty file
     file:
       path: "/root/.ssh/authorized_keys"
       state: touch
+      owner: root
+      mode: 0600
   - name: put pubkey
     lineinfile:
       path: "/root/.ssh/authorized_keys"
       line: "{{ item }}"
     loop: "{{ pubkeys }}"
+  - name: restart sshd
+    systemd:
+      name: sshd
+      state: restarted
+      daemon_reload: yes
