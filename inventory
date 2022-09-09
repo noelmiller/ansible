@@ -12,7 +12,6 @@ wiki.henrymillerfrazier.lan
 dashboard.henrymillerfrazier.lan
 proxy02.henrymillerfrazier.lan
 auth.henrymillerfrazier.lan
-ansible.henrymillerfrazier.lan
 
 [dockerservers]
 torrent.henrymillerfrazier.lan
@@ -28,7 +27,6 @@ unifi.henrymillerfrazier.lan
 proxy02.henrymillerfrazier.lan
 monitor.henrymillerfrazier.lan
 dashboard.henrymillerfrazier.lan
-log.henrymillerfrazier.lan
 teleport.henrymillerfrazier.com
 
 [monitor]
@@ -37,17 +35,12 @@ monitor.henrymillerfrazier.lan
 [automation]
 ansible.henrymillerfrazier.lan
 
-[webservers]
-blog.henrymillerfrazier.lan
-
 [hypervisors]
-pve.henrymillerfrazier.lan
+pve02.henrymillerfrazier.lan
 
 [automatic-updates:children]
 appservers
 infra
-webservers
-workstations
 templates
 
 [manual-updates:children]
@@ -58,7 +51,5 @@ hypervisors
 appservers
 infra
 automation
-webservers
-workstations
 templates
 dockerservers
