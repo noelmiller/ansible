@@ -8,26 +8,22 @@ nextcloud.henrymillerfrazier.lan
 plex02.henrymillerfrazier.lan
 torrent.henrymillerfrazier.lan
 git.henrymillerfrazier.lan
-wiki.henrymillerfrazier.lan
 dashboard.henrymillerfrazier.lan
 proxy02.henrymillerfrazier.lan
-auth.henrymillerfrazier.lan
+wiki.henrymillerfrazier.lan
 
 [dockerservers]
 torrent.henrymillerfrazier.lan
 unifi.henrymillerfrazier.lan
-wiki.henrymillerfrazier.lan
 dashboard.henrymillerfrazier.lan
 proxy02.henrymillerfrazier.lan
 ansible.henrymillerfrazier.lan
-auth.henrymillerfrazier.lan
 
 [infra]
 unifi.henrymillerfrazier.lan
 proxy02.henrymillerfrazier.lan
 monitor.henrymillerfrazier.lan
 dashboard.henrymillerfrazier.lan
-teleport.henrymillerfrazier.com
 
 [monitor]
 monitor.henrymillerfrazier.lan
