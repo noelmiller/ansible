@@ -1,12 +1,18 @@
 ---
-- hosts: automatic-updates
-  #strategy: free
+- name: Update Servers
+  hosts: automatic-updates
   tasks:
-  - name: Upgrade all packages
-    yum:
+  - name: Update all installed packages using YUM module
+    ansible.builtin.yum:
       name: '*'
       state: latest
-    register: yum
-  - name: Reboot
-    reboot:
-    when: yum.changed
+      update_cache: true
+      update_only: true
+    notify: Reboot Server
+  - name: Remove packages that are not needed anymore
+    ansible.builtin.yum:
+      autoremove: true
+
+  handlers:
+    - name: Reboot Server
+      ansible.builtin.reboot:
