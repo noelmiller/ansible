@@ -1,5 +1,6 @@
 ---
 - hosts: monitor
+  become: true
   tasks:
   - name: Add repository
     yum_repository:
