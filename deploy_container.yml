@@ -1,0 +1,6 @@
+# podman unshare ls -l /opt/containers/{{ container_name }} (IE dashmachine) ## Used determing current permissions of volume
+# podman unshare chown {{ user_uid }}:{{ user_gid }} -R /opt/containers/{{ container_name }} (IE dashmachine) ## Used to update to correct UID and GID for volume (must be run under non-root user)
+# podman create --name={{ container_name }} --subuidname={{ container_name }} --subgidname={{ container_name }} -p {{ host_port }}:{{ container_port }} -v /opt/containers/{{ container_name }}:{{ container_volume }}:Z --restart unless-stopped rmountjoy/dashmachine:latest
+# EXAMPLE: podman create --name=dashmachine --subuidname=dashmachine --subgidname=dashmachine -p 5000:5000 -v /opt/containers/dashmachine:/dashmachine/dashmachine/user_data:Z --restart unless-stopped rmountjoy/dashmachine:latest
+# podman generate systemd --name {{ container_name }} --new > /etc/systemd/system/container-{{ container_name }}.service
+# EXAMPLE: podman generate systemd --name dashmachine --new > /etc/systemd/system/container-dashmachine.service
