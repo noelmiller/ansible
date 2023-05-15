@@ -1,5 +1,5 @@
 ---
-- hosts: vms
+- hosts: all
   tasks:
   - name: Add SELinux Rule
     seport: 
