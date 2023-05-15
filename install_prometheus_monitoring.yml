@@ -1,5 +1,6 @@
 ---
-- hosts: vms, !monitor, !workstations
+- hosts: all, !monitor
+  become: true
   tasks:
   - name: Add repository
     yum_repository:
