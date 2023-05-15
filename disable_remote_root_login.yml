@@ -1,0 +1,22 @@
+---
+- hosts: all
+  gather_facts: false
+  become: true
+  tasks:
+  - name: Disable Root Login
+    notify: restart ssh
+    ansible.builtin.lineinfile:
+      dest: /etc/ssh/sshd_config
+      regexp: '^PermitRootLogin'
+      line: "PermitRootLogin no"
+      state: present
+  - name: Disable Root Login for Cockpit
+    ansible.builtin.lineinfile:
+      dest: /etc/pam.d/cockpit
+      line: "auth requisite pam_succeed_if.so uid >= 1000"
+      state: present
+  handlers:
+  - name: restart ssh
+    ansible.builtin.systemd:
+      name: sshd.service
+      state: restarted
