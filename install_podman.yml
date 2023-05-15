@@ -1,23 +1,25 @@
 ---
 - hosts: container_hosts
   tasks:
-  # - name: add podman-user
-  #   ansible.builtin.user:
-  #     name: podman-user
-  # - name: Ensure lingering is enabled
-  #   ansible.builtin.command: 
-  #     cmd: "loginctl enable-linger podman-user"
-  #     creates: /var/lib/systemd/linger/podman-user
   - name: Set container_manage_cgroup on
     ansible.posix.seboolean:
       name: container_manage_cgroup
       state: true
       persistent: true
+### USEFUL FOR ROOTLESS PODMAN.. DOES NOT WORK WITH FIREWALLD ###
+  # - name: add podman-user
+  #   ansible.builtin.user:
+  #     name: podman-user
   # - name: Add XDG_RUNTIME_DIR
   #   ansible.builtin.lineinfile:
   #     path: /home/podman-user/.bash_profile
   #     regexp: '^export XDG_RUNTIME_DIR='
   #     line: 'export XDG_RUNTIME_DIR="/run/user/$UID"'
+  # - name: Ensure lingering is enabled
+  #   ansible.builtin.command:
+  #     cmd: "loginctl enable-linger podman-user"
+  #     creates: /var/lib/systemd/linger/podman-user
+#################################################################
   - name: remove repository
     notify: yum-clean-metadata
     ansible.builtin.yum_repository:
