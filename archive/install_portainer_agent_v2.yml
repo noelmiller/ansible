@@ -1,0 +1,15 @@
+---
+- hosts: dashboard.henrymillerfrazier.lan
+  tasks:
+  - name: Add Portainer Agent Container
+    containers.podman.podman_container:
+      name: portainer_agent
+      image: portainer/agent
+      state: started
+      recreate: yes
+      privileged: true
+      ports:
+        - 9001:9001
+      volumes:
+        - /var/run/docker.sock:/var/run/docker.sock
+        - /var/lib/docker/volumes:/var/lib/docker/volumes

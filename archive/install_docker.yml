@@ -1,0 +1,31 @@
+---
+- hosts: dockerservers
+  tasks:
+  - name: Add repository
+    yum_repository:
+      name: docker
+      description: Docker Yum Repo
+      baseurl: "https://download.docker.com/linux/centos/$releasever/$basearch/stable"
+      gpgcheck: yes
+      gpgkey: "https://download.docker.com/linux/centos/gpg"
+  - name: Remove Podman and Buildah
+    yum:
+      name: 'podman, buildah, containers-common'
+      state: absent
+  - name: Install Docker
+    yum:
+      name: 'docker-ce, docker-ce-cli, containerd.io, python3, python3-pip'
+      state: latest
+  - name: Start Docker
+    systemd:
+      state: started
+      daemon_reload: yes
+      enabled: yes
+      name: docker
+  - name: Upgrade PIP
+    pip:
+      name: pip
+      state: latest
+  - name: Install Docker Compose
+    pip:
+      name: docker-compose
