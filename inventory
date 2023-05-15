@@ -1,29 +1,22 @@
-ansible.henrymillerfrazier.lan ansible_python_interpreter=/usr/libexec/platform-python
-
-[templates]
-template.henrymillerfrazier.lan
-
 [appservers]
 nextcloud.henrymillerfrazier.lan
 plex02.henrymillerfrazier.lan
 torrent.henrymillerfrazier.lan
 git.henrymillerfrazier.lan
-dashboard.henrymillerfrazier.lan
+containers.henrymillerfrazier.lan
 proxy02.henrymillerfrazier.lan
-wiki.henrymillerfrazier.lan
 
-[dockerservers]
+[container_hosts]
 torrent.henrymillerfrazier.lan
 unifi.henrymillerfrazier.lan
-dashboard.henrymillerfrazier.lan
+containers.henrymillerfrazier.lan
 proxy02.henrymillerfrazier.lan
-ansible.henrymillerfrazier.lan
 
 [infra]
 unifi.henrymillerfrazier.lan
 proxy02.henrymillerfrazier.lan
 monitor.henrymillerfrazier.lan
-dashboard.henrymillerfrazier.lan
+containers.henrymillerfrazier.lan
 
 [monitor]
 monitor.henrymillerfrazier.lan
@@ -31,21 +24,12 @@ monitor.henrymillerfrazier.lan
 [automation]
 ansible.henrymillerfrazier.lan
 
-[hypervisors]
-pve02.henrymillerfrazier.lan
-
-[automatic-updates:children]
+[automaticupdates:children]
 appservers
 infra
-templates
-
-[manual-updates:children]
-automation
-hypervisors
 
 [vms:children]
 appservers
 infra
 automation
-templates
-dockerservers
+container_hosts
