@@ -1,25 +1,49 @@
 ---
 - hosts: all
+  become: true
+  vars:
+    my_users:
+      - name: ansible
+        path: /home/ansible/.ssh
+      - name: noel
+        path: /home/noel/.ssh
+      - name: veeam
+        path: /home/veeam/.ssh
   tasks:
-  - name: make directory
-    file:
-      path: "/root/.ssh"
+  - name: make directories
+    loop: "{{ my_users }}"
+    ansible.builtin.file:
+      path: "{{ item['path'] }}"
       state: directory
-      owner: root
+      owner: "{{ item['name'] }}"
+      group: "{{ item['name'] }}"
       mode: 0700
   - name: create empty file
-    file:
-      path: "/root/.ssh/authorized_keys"
+    loop: "{{ my_users }}"
+    ansible.builtin.file:
+      path: "{{ item['path'] }}/authorized_keys"
       state: touch
-      owner: root
+      owner: "{{ item['name'] }}"
+      group: "{{ item['name'] }}"
       mode: 0600
-  - name: put pubkey
-    lineinfile:
-      path: "/root/.ssh/authorized_keys"
-      line: "{{ item }}"
+  - name: deploy ansible controller public key
+    ansible.builtin.lineinfile:
+      path: "/home/ansible/.ssh/authorized_keys"
+      line: "{{ ansible_controller_pubkey }}"
+      state: present
+  - name: deploy public key for noel
     loop: "{{ pubkeys }}"
+    ansible.builtin.lineinfile:
+      path: "/home/noel/.ssh/authorized_keys"
+      line: "{{ item }}"
+      state: present
+  - name: deploy public key for veeam
+    ansible.builtin.lineinfile:
+      path: "/home/veeam/.ssh/authorized_keys"
+      line: "{{ veeam_pubkey }}"
+      state: present
   - name: restart sshd
-    systemd:
+    ansible.builtin.systemd:
       name: sshd
       state: restarted
-      daemon_reload: yes
+      daemon_reload: true
