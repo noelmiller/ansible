@@ -1,14 +1,15 @@
 ---
 - name: Update Servers
+  become: true
   hosts: automatic-updates
   tasks:
   - name: Update all installed packages using YUM module
+    notify: Reboot Server
     ansible.builtin.yum:
       name: '*'
       state: latest
       update_cache: true
       update_only: true
-    notify: Reboot Server
   - name: Remove packages that are not needed anymore
     ansible.builtin.yum:
       autoremove: true
