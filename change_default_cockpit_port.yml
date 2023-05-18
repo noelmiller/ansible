@@ -1,8 +1,9 @@
 ---
 - hosts: all
+  become: true
   tasks:
   - name: Add SELinux Rule
-    seport: 
+    community.general.seport:
       ports: 9091
       proto: tcp
       setype: websm_port_t
@@ -10,39 +11,35 @@
     # shell:
     #   cmd: "semanage port -a -t websm_port_t -p tcp 9091"
   - name: Add Cockpit (9091)
-    firewalld:
+    ansible.posix.firewalld:
       port: 9091/tcp
       permanent: yes
       immediate: yes
       state: enabled
   - name: Remove Cockpit (9090)
-    firewalld:
+    ansible.posix.firewalld:
       service: cockpit
       permanent: yes
       immediate: yes
       state: disabled
-    # shell:
-    #   cmd: "firewall-cmd --permanent --service cockpit --add-port=9091/tcp && firewall-cmd --permanent --service cockpit --remove-port=9090/tcp && firewall-cmd --reload"
   - name: Make Directory (Web Console Port)
-    file:
+    ansible.builtin.file:
       path: "/etc/systemd/system/cockpit.socket.d"
       state: directory
   - name: Create Config File (Web Console Port)
-    file:
+    ansible.builtin.file:
       path: "/etc/systemd/system/cockpit.socket.d/listen.conf"
       state: touch
   - name: Update Config File (Web Console Port)
-    blockinfile:
+    ansible.builtin.blockinfile:
       path: "/etc/systemd/system/cockpit.socket.d/listen.conf"
       block: |
         [Socket]
         ListenStream=
         ListenStream=9091
   - name: Restart and Enable Cockpit Service
-    systemd: 
+    ansible.builtin.systemd: 
       state: restarted
       daemon_reload: yes
       enabled: yes
       name: cockpit.socket
-    # shell:
-    #   cmd: "systemctl daemon-reload && systemctl restart cockpit.socket"
