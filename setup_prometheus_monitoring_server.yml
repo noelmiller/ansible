@@ -3,7 +3,7 @@
   become: true
   tasks:
   - name: Add repository
-    yum_repository:
+    ansible.builtin.yum_repository:
       name: prometheus
       description: Prometheus Yum Repo
       baseurl: "https://packagecloud.io/prometheus-rpm/release/el/$releasever/$basearch"
@@ -13,11 +13,11 @@
         - "https://raw.githubusercontent.com/lest/prometheus-rpm/master/RPM-GPG-KEY-prometheus-rpm"
       metadata_expire: 300
   - name: Install Prometheus and Node Exporter
-    yum:
+    ansible.builtin.yum:
       name: 'prometheus2'
       state: latest
   - name: Enable Service (Prometheus)
-    systemd:
+    ansible.builtin.systemd:
       state: started
       daemon_reload: yes
       enabled: yes
@@ -35,7 +35,7 @@
       src: prometheus_server.yml.j2
       dest: /etc/prometheus/prometheus.yml
   - name: Restart Service (Prometheus)
-    systemd:
+    ansible.builtin.systemd:
       state: restarted
       daemon_reload: yes
       enabled: yes
