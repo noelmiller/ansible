@@ -4,3 +4,46 @@
 # EXAMPLE: podman create --name=dashmachine --subuidname=dashmachine --subgidname=dashmachine -p 5000:5000 -v /opt/containers/dashmachine:/dashmachine/dashmachine/user_data:Z --restart unless-stopped rmountjoy/dashmachine:latest
 # podman generate systemd --name {{ container_name }} --new > /etc/systemd/system/container-{{ container_name }}.service
 # EXAMPLE: podman generate systemd --name dashmachine --new > /etc/systemd/system/container-dashmachine.service
+- name: Deploy Container {{ container_name }}
+  hosts: containers.henrymillerfrazier.lan
+  become: true
+  vars:
+    container_name: dashmachine
+    container_directory: /opt/containers
+    container_image: docker.io/rmountjoy/dashmachine:latest
+    container_ports:
+      - "5000:5000"
+    container_volumes:
+      - "{{ container_directory }}/{{ container_name }}:/dashmachine/dashmachine/user_data:Z"
+  tasks:
+    - name: create user {{ container_name }}
+      ansible.builtin.user:
+        name: "{{ container_name }}"
+        state: "present"
+    - name: create directory for container files
+      ansible.builtin.file:
+        path: "{{ container_directory }}/{{ container_name }}" # e.g: /opt/containers/{{ container_name }}
+        state: directory
+        owner: "{{ container_name }}"
+        group: "{{ container_name }}"
+        mode: '0750'
+    - name: set file ownership with podman unshare
+      become_user: "{{ container_name }}"
+      ansible.builtin.command: "podman unshare chown {{ container_name }}:{{ container_name }} -R /opt/containers/{{ container_name }}"
+    - name: create container {{ container_name }}
+      containers.podman.podman_container:
+        name: "{{ container_name }}"
+        image: "{{ container_image }}"
+        subuidname: "{{ container_name }}"
+        subgidname: "{{ container_name }}"
+        ports: "{{ container_ports }}" # this is a list of port mappings (e.g 5000:5000)
+        volumes: "{{ container_volumes }}" # this is a list of container volumes (e.g {{ container_directory }}:{{ container_volume }} equivalent to: /opt/containers/dashmachine:/dashmachine/dashmachine/user_data:Z)
+        generate_systemd:
+          new: true
+          path: "/etc/systemd/system/"
+    - name: start and enable container-dashmachine.service
+      ansible.builtin.systemd:
+        name: "container-{{ container_name }}.service"
+        state: started
+        enabled: true
+        daemon_reload: true
