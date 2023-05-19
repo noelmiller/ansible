@@ -1,0 +1,15 @@
+containers_directory: /opt/containers
+my_containers:
+  - name: dashmachine
+    container_config:
+      name: "dashmachine"
+      image: "docker.io/rmountjoy/dashmachine:latest"
+      subuidname: "dashmachine"
+      subgidname: "dashmachine"
+      ports:
+        - "5000:5000"
+      volumes:
+        - "{{ containers_directory }}/dashmachine:/dashmachine/dashmachine/user_data:Z"
+      generate_systemd:
+        new: true
+        path: "/etc/systemd/system/"
