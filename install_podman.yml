@@ -1,57 +1,44 @@
 ---
-- hosts: container_hosts
+- name: Install podman
+  hosts: container_hosts
   tasks:
-  - name: Set container_manage_cgroup on
-    ansible.posix.seboolean:
-      name: container_manage_cgroup
-      state: true
-      persistent: true
-### USEFUL FOR ROOTLESS PODMAN.. DOES NOT WORK WITH FIREWALLD ###
-  # - name: add podman-user
-  #   ansible.builtin.user:
-  #     name: podman-user
-  # - name: Add XDG_RUNTIME_DIR
-  #   ansible.builtin.lineinfile:
-  #     path: /home/podman-user/.bash_profile
-  #     regexp: '^export XDG_RUNTIME_DIR='
-  #     line: 'export XDG_RUNTIME_DIR="/run/user/$UID"'
-  # - name: Ensure lingering is enabled
-  #   ansible.builtin.command:
-  #     cmd: "loginctl enable-linger podman-user"
-  #     creates: /var/lib/systemd/linger/podman-user
-#################################################################
-  - name: remove repository
-    notify: yum-clean-metadata
-    ansible.builtin.yum_repository:
-      name: docker
-      state: absent
-  - name: remove docker
-    ansible.builtin.yum:
-      name:
-      - docker-ce
-      - docker-ce-cli
-      - containerd.io
-      state: absent
-  - name: Install podman
-    ansible.builtin.yum:
-      name:
-      - podman
-      - podman-docker
-      state: latest
-  - name: Upgrade PIP
-    ansible.builtin.pip:
-      name: pip
-      state: latest
-  - name: Remove Docker Compose
-    ansible.builtin.pip:
-      name: docker-compose
-      state: absent
-  - name: flush_handlers
-    ansible.builtin.meta: flush_handlers
-  - name: reboot server
-    ansible.builtin.reboot:
+    - name: Set container_manage_cgroup on
+      ansible.posix.seboolean:
+        name: container_manage_cgroup
+        state: true
+        persistent: true
+    - name: Remove repository
+      notify: yum-clean-metadata
+      ansible.builtin.yum_repository:
+        name: docker
+        state: absent
+    - name: Remove docker
+      ansible.builtin.yum:
+        name:
+          - docker-ce
+          - docker-ce-cli
+          - containerd.io
+        state: absent
+    - name: Install podman
+      ansible.builtin.yum:
+        name:
+          - podman
+          - podman-docker
+        state: present
+    - name: Upgrade PIP
+      ansible.builtin.pip:
+        name: pip
+        state: present
+    - name: Remove Docker Compose
+      ansible.builtin.pip:
+        name: docker-compose
+        state: absent
+    - name: Flush Handlers
+      ansible.builtin.meta: flush_handlers
+    - name: Reboot server
+      ansible.builtin.reboot:
   handlers:
-  - name: yum-clean-metadata
-    ansible.builtin.command: yum clean metadata
-    args:
-      warn: false
+    - name: Yum Clean Metadata
+      ansible.builtin.command: yum clean metadata
+      args:
+        warn: false
