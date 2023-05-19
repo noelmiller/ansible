@@ -1,4 +1,15 @@
 containers_directory: /opt/containers
+host_firewall_ports:
+  - "5000/tcp"
+  - "3478/udp"
+  - "10001/udp"
+  - "8080/tcp"
+  - "8443/tcp"
+  - "1900/udp"
+  - "8843/tcp"
+  - "8880/tcp"
+  - "6789/tcp"
+  - "5514/udp"
 my_containers:
   - name: dashmachine
     container_config:
@@ -10,6 +21,27 @@ my_containers:
         - "5000:5000"
       volumes:
         - "{{ containers_directory }}/dashmachine:/dashmachine/dashmachine/user_data:Z"
+      generate_systemd:
+        new: true
+        path: "/etc/systemd/system/"
+  - name: unifi
+    container_config:
+      name: "unifi"
+      image: "ghcr.io/linuxserver/unifi-controller"
+      subuidname: "unifi"
+      subgidname: "unifi"
+      ports:
+        - "3478:3478/udp"
+        - "10001:10001/udp"
+        - "8080:8080"
+        - "8443:8443"
+        - "1900:1900/udp" #optional
+        - "8843:8843" #optional
+        - "8880:8880" #optional
+        - "6789:6789" #optional
+        - "5514:5514/udp" #optional
+      volumes:
+        - "{{ containers_directory }}/unifi:/config:Z"
       generate_systemd:
         new: true
         path: "/etc/systemd/system/"
