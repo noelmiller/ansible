@@ -1,49 +1,32 @@
-# podman unshare ls -l /opt/containers/{{ container_name }} (IE dashmachine) ## Used determing current permissions of volume
-# podman unshare chown {{ user_uid }}:{{ user_gid }} -R /opt/containers/{{ container_name }} (IE dashmachine) ## Used to update to correct UID and GID for volume (must be run under non-root user)
-# podman create --name={{ container_name }} --subuidname={{ container_name }} --subgidname={{ container_name }} -p {{ host_port }}:{{ container_port }} -v /opt/containers/{{ container_name }}:{{ container_volume }}:Z --restart unless-stopped rmountjoy/dashmachine:latest
-# EXAMPLE: podman create --name=dashmachine --subuidname=dashmachine --subgidname=dashmachine -p 5000:5000 -v /opt/containers/dashmachine:/dashmachine/dashmachine/user_data:Z --restart unless-stopped rmountjoy/dashmachine:latest
-# podman generate systemd --name {{ container_name }} --new > /etc/systemd/system/container-{{ container_name }}.service
-# EXAMPLE: podman generate systemd --name dashmachine --new > /etc/systemd/system/container-dashmachine.service
-- name: Deploy Container {{ container_name }}
-  hosts: containers.henrymillerfrazier.lan
+- name: Deploy Rootful Containers
+  hosts: container_hosts
   become: true
-  vars:
-    container_name: dashmachine
-    container_directory: /opt/containers
-    container_image: docker.io/rmountjoy/dashmachine:latest
-    container_ports:
-      - "5000:5000"
-    container_volumes:
-      - "{{ container_directory }}/{{ container_name }}:/dashmachine/dashmachine/user_data:Z"
+  gather_facts: false
   tasks:
-    - name: create user {{ container_name }}
+    - name: Create user
+      loop: "{{ my_containers }}"
       ansible.builtin.user:
-        name: "{{ container_name }}"
+        name: "{{ item['name'] }}"
         state: "present"
-    - name: create directory for container files
+    - name: Create directory for container files
+      loop: "{{ my_containers }}"
       ansible.builtin.file:
-        path: "{{ container_directory }}/{{ container_name }}" # e.g: /opt/containers/{{ container_name }}
+        path: "{{ containers_directory }}/{{ item['name'] }}" # e.g: /opt/containers/{{ container_name }}
         state: directory
-        owner: "{{ container_name }}"
-        group: "{{ container_name }}"
+        owner: "{{ item['name'] }}"
+        group: "{{ item['name'] }}"
         mode: '0750'
-    - name: set file ownership with podman unshare
-      become_user: "{{ container_name }}"
-      ansible.builtin.command: "podman unshare chown {{ container_name }}:{{ container_name }} -R /opt/containers/{{ container_name }}"
-    - name: create container {{ container_name }}
-      containers.podman.podman_container:
-        name: "{{ container_name }}"
-        image: "{{ container_image }}"
-        subuidname: "{{ container_name }}"
-        subgidname: "{{ container_name }}"
-        ports: "{{ container_ports }}" # this is a list of port mappings (e.g 5000:5000)
-        volumes: "{{ container_volumes }}" # this is a list of container volumes (e.g {{ container_directory }}:{{ container_volume }} equivalent to: /opt/containers/dashmachine:/dashmachine/dashmachine/user_data:Z)
-        generate_systemd:
-          new: true
-          path: "/etc/systemd/system/"
-    - name: start and enable container-dashmachine.service
+    - name: Set file ownership with podman unshare
+      loop: "{{ my_containers }}"
+      become_user: "{{ item['name'] }}"
+      ansible.builtin.command: "podman unshare chown {{ item['name'] }}:{{ item['name'] }} -R {{ containers_directory }}/{{ item['name'] }}"
+    - name: Create container
+      loop: "{{ my_containers }}"
+      containers.podman.podman_container: "{{ item['container_config'] }}"
+    - name: Start and enable container-dashmachine.service
+      loop: "{{ my_containers }}"
       ansible.builtin.systemd:
-        name: "container-{{ container_name }}.service"
+        name: "container-{{ item['name'] }}.service"
         state: started
         enabled: true
         daemon_reload: true
