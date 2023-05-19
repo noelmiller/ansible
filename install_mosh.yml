@@ -1,20 +1,21 @@
 ---
-- hosts: all
+- name: Install Mosh
+  hosts: all
   become: true
   tasks:
-  - name: Install EPEL-Release (RHEL)
-    ansible.builtin.yum:
-      name: https://dl.fedoraproject.org/pub/epel/epel-release-latest-8.noarch.rpm
-      state: present
-      disable_gpg_check: true
-    when: ansible_distribution == "RedHat" and ansible_distribution_major_version == "8"
-  - name: Install Mosh
-    ansible.builtin.yum:
-      name: 'mosh'
-      state: latest
-  - name: Update Firewall
-    ansible.posix.firewalld:
-      port: 60000-61000/udp
-      permanent: true
-      immediate: true
-      state: enabled
+    - name: Install EPEL-Release (RHEL)
+      when: ansible_distribution == "RedHat" and ansible_distribution_major_version == "8"
+      ansible.builtin.yum:
+        name: https://dl.fedoraproject.org/pub/epel/epel-release-latest-8.noarch.rpm
+        state: present
+        disable_gpg_check: true
+    - name: Install Mosh
+      ansible.builtin.yum:
+        name: 'mosh'
+        state: present
+    - name: Update Firewall
+      ansible.posix.firewalld:
+        port: 60000-61000/udp
+        permanent: true
+        immediate: true
+        state: enabled
