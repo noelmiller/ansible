@@ -1,0 +1,47 @@
+---
+- name: Create standard users
+  hosts: all
+  become: true
+  gather_facts: false
+  vars_files:
+    - secrets.enc
+  tasks:
+    - name: Allow user to have passwordless sudo
+      loop: "{{ standard_users }}"
+      when: item['passwordless_sudo']
+      ansible.builtin.lineinfile:
+        dest: "/etc/sudoers.d/10_{{ item['name'] }}"
+        state: present
+        regexp: "^{{ item['name'] }}"
+        line: "{{ item['name'] }} ALL=(ALL) NOPASSWD:ALL"
+        validate: 'visudo -cf %s'
+        create: true
+        owner: root
+        group: root
+        mode: '0440'
+    - name: Allow user to have passwordless sudo
+      loop: "{{ standard_users }}"
+      when: item['sudo']
+      ansible.builtin.lineinfile:
+        dest: "/etc/sudoers.d/10_{{ item['name'] }}"
+        state: present
+        regexp: "^{{ item['name'] }}"
+        line: "{{ item['name'] }} ALL=(ALL) ALL"
+        validate: 'visudo -cf %s'
+        create: true
+        owner: root
+        group: root
+        mode: '0440'
+    - name: Create new user without password
+      loop: "{{ standard_users }}"
+      when: item['password'] is undefined
+      ansible.builtin.user:
+        name: "{{ item['name'] }}"
+        groups: "{{ item['groups'] }}"
+    - name: Create new user with password
+      loop: "{{ standard_users }}"
+      when: item['password'] is defined
+      ansible.builtin.user:
+        name: "{{ item['name'] }}"
+        groups: "{{ item['groups'] }}"
+        password: "{{ item['password'] | password_hash('sha512') }}"
