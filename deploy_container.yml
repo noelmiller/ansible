@@ -1,5 +1,5 @@
 - name: Deploy Rootful Containers
-  hosts: container_hosts
+  hosts: containers.henrymillerfrazier.lan
   become: true
   gather_facts: false
   tasks:
@@ -30,3 +30,10 @@
         state: started
         enabled: true
         daemon_reload: true
+    - name: Create firewall rules on host
+      loop: "{{ host_firewall_ports }}"
+      ansible.posix.firewalld:
+        port: "{{ item }}"
+        permanent: true
+        state: enabled
+        immediate: true
