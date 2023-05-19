@@ -1,42 +1,46 @@
 ---
-- hosts: monitor
+- name: Setup Prometheus Monitoring Server
+  hosts: monitor
   become: true
   tasks:
-  - name: Add repository
-    ansible.builtin.yum_repository:
-      name: prometheus
-      description: Prometheus Yum Repo
-      baseurl: "https://packagecloud.io/prometheus-rpm/release/el/$releasever/$basearch"
-      gpgcheck: yes
-      gpgkey: 
-        - "https://packagecloud.io/prometheus-rpm/release/gpgkey"
-        - "https://raw.githubusercontent.com/lest/prometheus-rpm/master/RPM-GPG-KEY-prometheus-rpm"
-      metadata_expire: 300
-  - name: Install Prometheus and Node Exporter
-    ansible.builtin.yum:
-      name: 'prometheus2'
-      state: latest
-  - name: Enable Service (Prometheus)
-    ansible.builtin.systemd:
-      state: started
-      daemon_reload: yes
-      enabled: yes
-      name: prometheus.service
-  - name: Update Firewall (9090)
-    firewalld:
-      port: 9090/tcp
-      permanent: yes
-      immediate: yes
-      state: enabled
-  - name: Add Inventory to Config File
-    vars:
-      servers_to_monitor: "{{ groups['vms'] }}"
-    template: 
-      src: prometheus_server.yml.j2
-      dest: /etc/prometheus/prometheus.yml
-  - name: Restart Service (Prometheus)
-    ansible.builtin.systemd:
-      state: restarted
-      daemon_reload: yes
-      enabled: yes
-      name: prometheus.service
+    - name: Add repository
+      ansible.builtin.yum_repository:
+        name: prometheus
+        description: Prometheus Yum Repo
+        baseurl: "https://packagecloud.io/prometheus-rpm/release/el/$releasever/$basearch"
+        gpgcheck: true
+        gpgkey:
+          - "https://packagecloud.io/prometheus-rpm/release/gpgkey"
+          - "https://raw.githubusercontent.com/lest/prometheus-rpm/master/RPM-GPG-KEY-prometheus-rpm"
+        metadata_expire: 300
+    - name: Install Prometheus and Node Exporter
+      ansible.builtin.yum:
+        name: 'prometheus2'
+        state: present
+    - name: Enable Service (Prometheus)
+      ansible.builtin.systemd:
+        state: started
+        daemon_reload: true
+        enabled: true
+        name: prometheus.service
+    - name: Update Firewall (9090)
+      ansible.posix.firewalld:
+        port: 9090/tcp
+        permanent: true
+        immediate: true
+        state: enabled
+    - name: Add Inventory to Config File
+      vars:
+        servers_to_monitor: "{{ groups['vms'] }}"
+      ansible.builtin.template:
+        src: prometheus_server.yml.j2
+        dest: /etc/prometheus/prometheus.yml
+        owner: root
+        group: root
+        mode: "0644"
+    - name: Restart Service (Prometheus)
+      ansible.builtin.systemd:
+        state: restarted
+        daemon_reload: true
+        enabled: true
+        name: prometheus.service
