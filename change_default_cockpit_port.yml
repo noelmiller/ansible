@@ -1,45 +1,50 @@
 ---
-- hosts: all
+- name: Change Default Cockpit Port
+  hosts: all
   become: true
   tasks:
-  - name: Add SELinux Rule
-    community.general.seport:
-      ports: 9091
-      proto: tcp
-      setype: websm_port_t
-      state: present
-    # shell:
-    #   cmd: "semanage port -a -t websm_port_t -p tcp 9091"
-  - name: Add Cockpit (9091)
-    ansible.posix.firewalld:
-      port: 9091/tcp
-      permanent: yes
-      immediate: yes
-      state: enabled
-  - name: Remove Cockpit (9090)
-    ansible.posix.firewalld:
-      service: cockpit
-      permanent: yes
-      immediate: yes
-      state: disabled
-  - name: Make Directory (Web Console Port)
-    ansible.builtin.file:
-      path: "/etc/systemd/system/cockpit.socket.d"
-      state: directory
-  - name: Create Config File (Web Console Port)
-    ansible.builtin.file:
-      path: "/etc/systemd/system/cockpit.socket.d/listen.conf"
-      state: touch
-  - name: Update Config File (Web Console Port)
-    ansible.builtin.blockinfile:
-      path: "/etc/systemd/system/cockpit.socket.d/listen.conf"
-      block: |
-        [Socket]
-        ListenStream=
-        ListenStream=9091
-  - name: Restart and Enable Cockpit Service
-    ansible.builtin.systemd: 
-      state: restarted
-      daemon_reload: yes
-      enabled: yes
-      name: cockpit.socket
+    - name: Add SELinux Rule
+      community.general.seport:
+        ports: 9091
+        proto: tcp
+        setype: websm_port_t
+        state: present
+    - name: Add Cockpit (9091)
+      ansible.posix.firewalld:
+        port: 9091/tcp
+        permanent: true
+        immediate: true
+        state: enabled
+    - name: Remove Cockpit (9090)
+      ansible.posix.firewalld:
+        service: cockpit
+        permanent: true
+        immediate: true
+        state: disabled
+    - name: Make Directory (Web Console Port)
+      ansible.builtin.file:
+        path: "/etc/systemd/system/cockpit.socket.d"
+        state: directory
+        owner: root
+        group: root
+        mode: "0755"
+    - name: Create Config File (Web Console Port)
+      ansible.builtin.file:
+        path: "/etc/systemd/system/cockpit.socket.d/listen.conf"
+        state: file
+        owner: root
+        group: root
+        mode: "0644"
+    - name: Update Config File (Web Console Port)
+      ansible.builtin.blockinfile:
+        path: "/etc/systemd/system/cockpit.socket.d/listen.conf"
+        block: |
+          [Socket]
+          ListenStream=
+          ListenStream=9091
+    - name: Restart and Enable Cockpit Service
+      ansible.builtin.systemd:
+        state: restarted
+        daemon_reload: true
+        enabled: true
+        name: cockpit.socket
