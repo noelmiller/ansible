@@ -1,0 +1,43 @@
+---
+- name: Configure RHEL Server
+  hosts: all
+  become: true
+  vars_files:
+    - secrets.enc
+  roles:
+    - { role: linux-system-roles.rhc, tags: register_rhel }
+# TODO: Figure out a way to add SSH key to newly create RHEL VM
+- name: Create Standard Users
+  tags: "create_standard_users"
+  ansible.builtin.import_playbook: create_standard_users.yml
+
+- name: Deploy Authorized Keys
+  tags: "deploy_authorized_keys"
+  ansible.builtin.import_playbook: deploy_authorized_keys.yml
+
+- name: Disable SSH Password Login
+  tags: "disable_ssh_password_login"
+  ansible.builtin.import_playbook: disable_ssh_password_login.yml
+
+- name: Disable Remote Root Login
+  tags: "disable_remote_root_login"
+  ansible.builtin.import_playbook: disable_remote_root_login.yml
+
+- name: Change Default Cockpit Port
+  tags: "change_default_cockpit_port"
+  ansible.builtin.import_playbook: change_default_cockpit_port.yml
+
+- name: Install Prometheus Monitoring on all servers
+  ansible.builtin.import_playbook: install_prometheus_monitoring.yml
+
+- name: Setup or Update Prometheus Monitoring Server
+  tags: "setup_prometheus_monitoring_server"
+  ansible.builtin.import_playbook: setup_prometheus_monitoring_server.yml
+
+- name: Install mosh
+  tags: "install_mosh"
+  ansible.builtin.import_playbook: install_mosh.yml
+
+- name: Update All Packages to Latest Version
+  tags: "update_server"
+  ansible.builtin.import_playbook: update_server.yml
