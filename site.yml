@@ -38,6 +38,10 @@
   tags: "install_mosh"
   ansible.builtin.import_playbook: install_mosh.yml
 
+- name: Configure shell
+  tags: "configure_shell"
+  ansible.builtin.import_playbook: configure_shell.yml
+
 - name: Update All Packages to Latest Version
   tags: "update_server"
   ansible.builtin.import_playbook: update_server.yml
