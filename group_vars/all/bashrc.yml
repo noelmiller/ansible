@@ -1,0 +1,50 @@
+my_bashrc: |
+
+  # ===============================
+  # General environment variables
+  # ===============================
+
+  # Set editor for oc commands
+  export EDITOR=/usr/bin/vim
+
+  # Set bash history size
+  export HISTSIZE=10000
+
+  # Set bash history timestamps
+  export HISTTIMEFORMAT="%F %T "
+
+  # Set pager not to clear on exit
+  export LESS='-X'
+
+  # Append to .bash_history
+  PROMPT_COMMAND="$PROMPT_COMMAND; history -a; history -n"
+
+  # ===============================
+  # Git bash environment variables
+  # ===============================
+
+  source /usr/share/git-core/contrib/completion/git-prompt.sh
+  export GIT_PS1_SHOWDIRTYSTATE=true
+  export GIT_PS1_SHOWUNTRACKEDFILES=true
+  export PS1='[\u@\h \W$(declare -F __git_ps1 &>/dev/null && __git_ps1 " (%s)")]\$ '
+  export GIT_PAGER=/usr/bin/cat
+
+  # ===============================
+  # Ansible aliases (ansible-core)
+  # ===============================
+
+  alias ap="ansible-playbook"
+  alias apsc="ansible-playbook --syntax-check"
+  alias apc="ansible-playbook --check"
+  alias acd="ansible-config dump"
+  alias av="ansible --version"
+  alias aig="ansible-inventory --graph"
+
+  # ================
+  # General aliases
+  # ================
+
+  # stop using scp
+  alias scp="echo -e \nStop using scp\n\nSee https://www.redhat.com/en/blog/openssh-scp-deprecation-rhel-9-what-you-need-know"
+
+

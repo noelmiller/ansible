@@ -1,0 +1,25 @@
+dir_list:
+  - ~/.vim/autoload
+  - ~/.vim/bundle
+  - ~/.config/yamllint
+
+repo_list:
+  - https://github.com/Yggdroot/indentLine.git
+  - https://github.com/pedrohdz/vim-yaml-folds.git
+  - https://github.com/dense-analysis/ale.git
+  - https://github.com/joshdick/onedark.vim.git
+  - https://github.com/tpope/vim-surround.git
+  - https://github.com/vim-airline/vim-airline.git
+  - https://github.com/scrooloose/nerdtree.git
+config_files:
+  vim:
+    file: vimrc
+    dest: ~/.vimrc
+
+  yamllint:
+    file: yaml_lint_config
+    dest: ~/.config/yamllint/config
+
+  tmux:
+    file: tmux.conf
+    dest: ~/.tmux.conf
