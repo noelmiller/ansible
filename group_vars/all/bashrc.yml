@@ -24,10 +24,11 @@ my_bashrc: |
   # ===============================
 
   source /usr/share/git-core/contrib/completion/git-prompt.sh
-  export GIT_PS1_SHOWDIRTYSTATE=true
-  export GIT_PS1_SHOWUNTRACKEDFILES=true
-  export PS1='[\u@\h \W$(declare -F __git_ps1 &>/dev/null && __git_ps1 " (%s)")]\$ '
-  export GIT_PAGER=/usr/bin/cat
+  
+  # ===============================
+  # Configure PS1
+  # ===============================
+  source ~/.bash-powerline/bash-powerline.sh
 
   # ===============================
   # Ansible aliases (ansible-core)
@@ -46,5 +47,6 @@ my_bashrc: |
 
   # stop using scp
   alias scp="echo -e \nStop using scp\n\nSee https://www.redhat.com/en/blog/openssh-scp-deprecation-rhel-9-what-you-need-know"
+  alias ls="exa"
 
 

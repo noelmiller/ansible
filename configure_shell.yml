@@ -13,32 +13,83 @@
           - python3
           - python3-pip
         state: present
+
+    - name: Create downloads directory
+      become_user: root
+      ansible.builtin.file:
+        path: /opt/downloads/exa
+        state: directory
+
+    - name: Download and Unzip exa
+      become_user: root
+      ansible.builtin.unarchive:
+        src: "https://github.com/ogham/exa/releases/download/v0.10.1/exa-linux-x86_64-v0.10.1.zip"
+        dest: "/opt/downloads/exa"
+        remote_src: true
+
+    - name: Copy files to exa files to proper directories
+      become_user: root
+      loop:
+        - name: bin
+          src: /opt/downloads/exa/bin/exa
+          dest: /usr/local/bin/exa
+          mode: "0755"
+        - name: man_exa1
+          src: /opt/downloads/exa/man/exa.1
+          dest: /usr/local/share/man/man1/exa.1
+          mode: "0644"
+        - name: man_exa5
+          src: /opt/downloads/exa/man/exa_colors.5
+          dest: /usr/local/share/man/man5/exa_colors.5
+          mode: "0644"
+        - name: bash_completions
+          src: /opt/downloads/exa/completions/exa.bash
+          dest: /etc/bash_completion.d/exa.bash
+          mode: "0644"
+      ansible.builtin.copy:
+        src: "{{ item['src'] }}"
+        dest: "{{ item['dest'] }}"
+        remote_src: true
+        mode: "{{ item['mode'] }}"
+
     - name: Ensure needed python packages are installed
       ansible.builtin.pip:
         name: yamllint
         state: present
         extra_args: --user
+
     - name: Ensure needed directories are present
       loop: "{{ dir_list }}"
       ansible.builtin.file:
         path: "{{ item }}"
         state: directory
         mode: "0755"
+
     - name: Ensure pathogen is downloaded
       ansible.builtin.get_url:
         url: https://tpo.pe/pathogen.vim
         dest: ~/.vim/autoload/pathogen.vim
         mode: "0644"
+
     - name: Ensure plugin repos are cloned
       loop: "{{ repo_list }}"
       ansible.builtin.git:
         repo: "{{ item }}"
         dest: ~/.vim/bundle/{{ item.split('/')[-1] | regex_replace('\.git$') }}
+
+    - name: Clone bash-powerline repo
+      vars:
+        bash_powerline_dir: "~/.bash-powerline"
+      ansible.builtin.git: 
+        repo: "https://github.com/riobard/bash-powerline.git"
+        dest: "{{ bash_powerline_dir }}"
+
     - name: Ensure config files are copied
       loop: "{{ lookup('dict', config_files) }}"
       ansible.builtin.copy:
         src: "{{ item['value']['file'] }}"
         dest: "{{ item['value']['dest'] }}"
+
     - name: Ensure ~/.bashrc is configured
       ansible.builtin.blockinfile:
         path: ~/.bashrc
