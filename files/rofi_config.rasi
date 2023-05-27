@@ -1,0 +1,5 @@
+@theme "catppuccin-launcher"
+configuration {
+    display-drun: "";
+}
+

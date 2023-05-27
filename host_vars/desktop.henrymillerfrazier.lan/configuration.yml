@@ -1,0 +1,5 @@
+desktop_config_dir_list:
+  - ~/.config/kitty
+  - ~/.config/sway
+  - ~/.config/waybar
+  - ~/.config/rofi
