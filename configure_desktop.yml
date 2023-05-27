@@ -41,18 +41,20 @@
           - im.riot.Riot
           - com.bitwarden.desktop
           - com.nextcloud.desktopclient.nextcloud
+          - sh.ppy.osu
         state: present
         method: user
 
-    - name: Create Games Directory
-      ansible.builtin.file:
-        path: ~/Games
-        state: directory
+## MAY STILL NEED, Gonna try the flatpak first
+#   - name: Create Games Directory
+#     ansible.builtin.file:
+#       path: ~/Games
+#       state: directory
 
-    - name: Download OSU Lazer
-      ansible.builtin.get_url:
-        url: "https://github.com/ppy/osu/releases/latest/download/osu.AppImage"
-        dest: ~/Games/osu.AppImage
+#   - name: Download OSU Lazer
+#     ansible.builtin.get_url:
+#       url: "https://github.com/ppy/osu/releases/latest/download/osu.AppImage"
+#       dest: ~/Games/osu.AppImage
 
     - name: Create fonts directory
       ansible.builtin.file:
