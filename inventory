@@ -4,19 +4,15 @@ desktop.henrymillerfrazier.lan
 [appservers]
 nextcloud.henrymillerfrazier.lan
 plex02.henrymillerfrazier.lan
-torrent.henrymillerfrazier.lan
 git.henrymillerfrazier.lan
 containers.henrymillerfrazier.lan
 proxy02.henrymillerfrazier.lan
 
 [container_hosts]
-torrent.henrymillerfrazier.lan
-unifi.henrymillerfrazier.lan
 containers.henrymillerfrazier.lan
 proxy02.henrymillerfrazier.lan
 
 [infra]
-unifi.henrymillerfrazier.lan
 proxy02.henrymillerfrazier.lan
 monitor.henrymillerfrazier.lan
 containers.henrymillerfrazier.lan
