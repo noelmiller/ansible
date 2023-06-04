@@ -6,24 +6,24 @@
     - name: Create user
       loop: "{{ my_containers }}"
       ansible.builtin.user:
-        name: "{{ item['name'] }}"
-        state: "present"
+        name: "{{ item['container_config']['subuidname'] }}"
+        state: present
     - name: Create directory for container files
       loop: "{{ my_containers }}"
       ansible.builtin.file:
         path: "{{ containers_directory }}/{{ item['name'] }}" # e.g: /opt/containers/{{ container_name }}
         state: directory
-        owner: "{{ item['name'] }}"
-        group: "{{ item['name'] }}"
-        mode: '0750'
-    - name: Set file ownership with podman unshare
+        owner: "{{ item['container_config']['subuidname'] }}"
+        group: "{{ item['container_config']['subuidname'] }}"
+        mode: '0770'
+    - name: Set file ownership with podman unshare for config directory
       loop: "{{ my_containers }}"
-      become_user: "{{ item['name'] }}"
-      ansible.builtin.command: "podman unshare chown {{ item['name'] }}:{{ item['name'] }} -R {{ containers_directory }}/{{ item['name'] }}"
+      become_user: "{{ item['container_config']['subuidname'] }}"
+      ansible.builtin.command: "podman unshare chown {{ item['container_config']['subuidname'] }}:{{ item['container_config']['subuidname'] }} -R {{ containers_directory }}/{{ item['name'] }}"
     - name: Create container
       loop: "{{ my_containers }}"
       containers.podman.podman_container: "{{ item['container_config'] }}"
-    - name: Start and enable container-dashmachine.service
+    - name: Start and enable container-containername.service
       loop: "{{ my_containers }}"
       ansible.builtin.systemd:
         name: "container-{{ item['name'] }}.service"
