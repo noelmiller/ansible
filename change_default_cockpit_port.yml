@@ -3,6 +3,10 @@
   hosts: all
   become: true
   tasks:
+    - name: Install cockpit
+      ansible.builtin.yum:
+        name: cockpit
+        state: present
     - name: Add SELinux Rule
       community.general.seport:
         ports: 9091
@@ -28,13 +32,6 @@
         owner: root
         group: root
         mode: "0755"
-    - name: Create Config File (Web Console Port)
-      ansible.builtin.file:
-        path: "/etc/systemd/system/cockpit.socket.d/listen.conf"
-        state: file
-        owner: root
-        group: root
-        mode: "0644"
     - name: Update Config File (Web Console Port)
       ansible.builtin.blockinfile:
         path: "/etc/systemd/system/cockpit.socket.d/listen.conf"
@@ -42,6 +39,10 @@
           [Socket]
           ListenStream=
           ListenStream=9091
+        create: true
+        owner: root
+        group: root
+        mode: "0644"
     - name: Restart and Enable Cockpit Service
       ansible.builtin.systemd:
         state: restarted
