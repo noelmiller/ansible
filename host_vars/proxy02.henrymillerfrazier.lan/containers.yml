@@ -1,0 +1,22 @@
+containers_directory: /opt/containers
+host_firewall_ports:
+  - "80/tcp"
+  - "81/tcp"
+  - "443/tcp"
+my_containers:
+  - name: proxy
+    container_config:
+      name: "proxy"
+      image: "jc21/nginx-proxy-manager:latest"
+      subuidname: "proxy"
+      subgidname: "proxy"
+      ports:
+        - "80:80"
+        - "81:81"
+        - "443:443"
+      volumes:
+        - "{{ containers_directory }}/proxy/data:/data:Z"
+        - "{{ containers_directory }}/proxy/letsencrypt:/etc/letsencrypt:Z"
+      generate_systemd:
+        new: true
+        path: "/etc/systemd/system/"

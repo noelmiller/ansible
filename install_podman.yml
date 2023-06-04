@@ -1,6 +1,7 @@
 ---
 - name: Install podman
-  hosts: container_hosts
+  hosts: containers.henrymillerfrazier.lan,proxy02.henrymillerfrazier.lan
+  become: true
   tasks:
     - name: Set container_manage_cgroup on
       ansible.posix.seboolean:
@@ -8,7 +9,7 @@
         state: true
         persistent: true
     - name: Remove repository
-      notify: yum-clean-metadata
+      notify: Yum Clean Metadata
       ansible.builtin.yum_repository:
         name: docker
         state: absent

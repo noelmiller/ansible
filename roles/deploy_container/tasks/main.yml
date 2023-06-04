@@ -1,0 +1,35 @@
+---
+- name: Create user
+  loop: "{{ my_containers }}"
+  ansible.builtin.user:
+    name: "{{ item['container_config']['subuidname'] }}"
+    state: present
+- name: Create directory for container files
+  loop: "{{ my_containers }}"
+  ansible.builtin.file:
+    path: "{{ containers_directory }}/{{ item['name'] }}" # e.g: /opt/containers/{{ container_name }}
+    state: directory
+    owner: "{{ item['container_config']['subuidname'] }}"
+    group: "{{ item['container_config']['subuidname'] }}"
+    mode: '0770'
+- name: Set file ownership with podman unshare for config directory
+  loop: "{{ my_containers }}"
+  become_user: "{{ item['container_config']['subuidname'] }}"
+  ansible.builtin.command: "podman unshare chown {{ item['container_config']['subuidname'] }}:{{ item['container_config']['subuidname'] }} -R {{ containers_directory }}/{{ item['name'] }}"
+- name: Create container
+  loop: "{{ my_containers }}"
+  containers.podman.podman_container: "{{ item['container_config'] }}"
+- name: Start and enable container-containername.service
+  loop: "{{ my_containers }}"
+  ansible.builtin.systemd:
+    name: "container-{{ item['name'] }}.service"
+    state: started
+    enabled: true
+    daemon_reload: true
+- name: Create firewall rules on host
+  loop: "{{ host_firewall_ports }}"
+  ansible.posix.firewalld:
+    port: "{{ item }}"
+    permanent: true
+    state: enabled
+    immediate: true
