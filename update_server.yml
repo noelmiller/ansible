@@ -1,7 +1,7 @@
 ---
 - name: Update Servers
   become: true
-  hosts: automatic-updates
+  hosts: automatic_updates
   force_handlers: true
   tasks:
     - name: Update all installed packages using YUM module
