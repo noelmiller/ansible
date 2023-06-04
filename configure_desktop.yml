@@ -12,6 +12,15 @@
           - git
           - flatpak
           - '@virtualization'
+          - exa
+          - nextcloud-client
+          - htop
+          - podman
+          - unzip
+          - cmatrix
+          - flameshot
+          - neofetch
+          - telnet
         state: present
 
     - name: Configure and enable libvirtd
@@ -40,8 +49,14 @@
           - io.podman_desktop.PodmanDesktop
           - im.riot.Riot
           - com.bitwarden.desktop
-          - com.nextcloud.desktopclient.nextcloud
           - sh.ppy.osu
+          - com.spotify.Client
+          - tv.plex.PlexHTPC
+          - org.signal.Signal
+          - org.gimp.GIMP
+          - io.github.hrkfdn.ncspot
+          - net.lutris.Lutris
+          - org.remmina.Remmina
         state: present
         method: user
 
