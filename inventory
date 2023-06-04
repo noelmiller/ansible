@@ -23,7 +23,7 @@ monitor.henrymillerfrazier.lan
 [automation]
 ansible.henrymillerfrazier.lan
 
-[automaticupdates:children]
+[automatic_updates:children]
 appservers
 infra
 
