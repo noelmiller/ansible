@@ -3,3 +3,30 @@ desktop_config_dir_list:
   - ~/.config/sway
   - ~/.config/waybar
   - ~/.config/rofi
+  - ~/.config/dunst
+
+desktop_config_files:
+  kitty:
+    file: kitty.conf
+    dest: ~/.config/kitty/kitty.conf
+  sway:
+    file: sway.conf
+    dest: ~/.config/sway/config
+  waybar_config:
+    file: waybar.jsonc
+    dest: ~/.config/waybar/config.jsonc
+  waybar_theme:
+    file: waybar_theme.css
+    dest: ~/.config/waybar/style.css
+  rofi_config:
+    file: rofi_config.rasi
+    dest: ~/.config/rofi/config.rasi
+  rofi_colors:
+    file: rofi_colors.rasi
+    dest: ~/.config/rofi/catppuccin-colors.rasi
+  rofi_launcher:
+    file: rofi_launcher.rasi
+    dest: ~/.config/rofi/catppuccin-launcher.rasi
+  dunst:
+    file: dunstrc
+    dest: ~/.config/dunst/dunstrc
