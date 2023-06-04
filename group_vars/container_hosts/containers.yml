@@ -10,6 +10,9 @@ host_firewall_ports:
   - "8880/tcp"
   - "6789/tcp"
   - "5514/udp"
+  - "8081/tcp"
+  - "8989/tcp"
+  - "7878/tcp"
 my_containers:
   - name: dashmachine
     container_config:
@@ -42,6 +45,60 @@ my_containers:
         - "5514:5514/udp" #optional
       volumes:
         - "{{ containers_directory }}/unifi:/config:Z"
+      generate_systemd:
+        new: true
+        path: "/etc/systemd/system/"
+  - name: sabnzbd
+    container_config:
+      name: sabnzbd
+      image: "lscr.io/linuxserver/sabnzbd:latest"
+      subuidname: "torrent"
+      subgidname: "torrent"
+      env:
+        PUID: 1009
+        PGID: 1010
+      ports:
+        - "8081:8080"
+      volumes:
+        - "{{ containers_directory }}/sabnzbd:/config:Z"
+        - "/data/files/Downloads:/downloads"
+        - "/incomplete-downloads:/incomplete-downloads"
+      generate_systemd:
+        new: true
+        path: "/etc/systemd/system/"
+  - name: sonarr
+    container_config:
+      name: sonarr
+      image: "lscr.io/linuxserver/sonarr:latest"
+      subuidname: "torrent"
+      subgidname: "torrent"
+      env:
+        PUID: 1009
+        PGID: 1010
+      ports:
+        - "8989:8989"
+      volumes:
+        - "{{ containers_directory }}/sonarr/config:/config:Z"
+        - "/data/files/TV:/tv"
+        - "/data/files/Downloads:/downloads"
+      generate_systemd:
+        new: true
+        path: "/etc/systemd/system/"
+  - name: radarr
+    container_config:
+      name: radarr
+      image: "lscr.io/linuxserver/radarr:latest"
+      subuidname: "torrent"
+      subgidname: "torrent"
+      env:
+        PUID: 1009
+        PGID: 1010
+      ports:
+        - "7878:7878"
+      volumes:
+        - "{{ containers_directory }}/radarr/config:/config:Z"
+        - "/data/files/Movies:/movies"
+        - "/data/files/Downloads:/downloads" 
       generate_systemd:
         new: true
         path: "/etc/systemd/system/"
