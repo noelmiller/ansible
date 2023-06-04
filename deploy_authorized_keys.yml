@@ -1,6 +1,6 @@
 ---
 - name: Deploy Authorized Keys
-  hosts: all
+  hosts: all,!desktops
   become: true
   gather_facts: false
   vars_files:
@@ -24,6 +24,7 @@
         owner: "{{ item['name'] }}"
         group: "{{ item['name'] }}"
         mode: "0600"
+        create: true
   handlers:
     - name: Restart sshd
       ansible.builtin.systemd:
