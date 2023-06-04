@@ -23,6 +23,12 @@
           - telnet
         state: present
 
+    - name: Remove firefox
+      become_user: root
+      ansible.builtin.dnf:
+        name: firefox
+        state: absent
+
     - name: Configure and enable libvirtd
       become_user: root
       ansible.builtin.service:
@@ -57,6 +63,7 @@
           - io.github.hrkfdn.ncspot
           - net.lutris.Lutris
           - org.remmina.Remmina
+          - org.mozilla.firefox
         state: present
         method: user
 
