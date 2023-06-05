@@ -30,15 +30,63 @@ my_bashrc: |
   # ===============================
   # Configure PS1
   # ===============================
-  source ~/.bash-powerline/bash-powerline.sh
+
+  # get current branch in git repo
+  function parse_git_branch() {
+    BRANCH=`git branch 2> /dev/null | sed -e '/^[^*]/d' -e 's/* \(.*\)/\1/'`
+    if [ ! "${BRANCH}" == "" ]
+    then
+      STAT=`parse_git_dirty`
+      echo "[${BRANCH}${STAT}]"
+    else
+      echo ""
+    fi
+  }
+
+  # get current status of git repo
+  function parse_git_dirty {
+    status=`git status 2>&1 | tee`
+    dirty=`echo -n "${status}" 2> /dev/null | grep "modified:" &> /dev/null; echo "$?"`
+    untracked=`echo -n "${status}" 2> /dev/null | grep "Untracked files" &> /dev/null; echo "$?"`
+    ahead=`echo -n "${status}" 2> /dev/null | grep "Your branch is ahead of" &> /dev/null; echo "$?"`
+    newfile=`echo -n "${status}" 2> /dev/null | grep "new file:" &> /dev/null; echo "$?"`
+    renamed=`echo -n "${status}" 2> /dev/null | grep "renamed:" &> /dev/null; echo "$?"`
+    deleted=`echo -n "${status}" 2> /dev/null | grep "deleted:" &> /dev/null; echo "$?"`
+    bits=''
+    if [ "${renamed}" == "0" ]; then
+      bits=">${bits}"
+    fi
+    if [ "${ahead}" == "0" ]; then
+      bits="*${bits}"
+    fi
+    if [ "${newfile}" == "0" ]; then
+      bits="+${bits}"
+    fi
+    if [ "${untracked}" == "0" ]; then
+      bits="?${bits}"
+    fi
+    if [ "${deleted}" == "0" ]; then
+      bits="x${bits}"
+    fi
+    if [ "${dirty}" == "0" ]; then
+      bits="!${bits}"
+    fi
+    if [ ! "${bits}" == "" ]; then
+      echo " ${bits}"
+    else
+      echo ""
+    fi
+  }
+
+  export PS1="[\H][\w]\`parse_git_branch\`\\$ "
 
   # ===============================
   # Ansible aliases (ansible-core)
   # ===============================
 
-  alias ap="ansible-playbook"
-  alias apsc="ansible-playbook --syntax-check"
-  alias apc="ansible-playbook --check"
+  alias anr="ansible-navigator run"
+  alias ansc="ansible-navigator run --syntax-check"
+  alias anc="ansible-navigator run --check"
   alias acd="ansible-config dump"
   alias av="ansible --version"
   alias aig="ansible-inventory --graph"
@@ -51,5 +99,4 @@ my_bashrc: |
   alias scp="echo -e \nStop using scp\n\nSee https://www.redhat.com/en/blog/openssh-scp-deprecation-rhel-9-what-you-need-know"
   alias ls="exa"
   alias betterdiscord-update="DISC_CONFIG=\"\$HOME/.var/app/com.discordapp.Discord/config/discord\" && BD_ASAR=betterdiscord.asar && wget --timestamping -P \"\${DISC_CONFIG}/../BetterDiscord/data\" -- \"https://github.com/BetterDiscord/BetterDiscord/releases/latest/download/\${BD_ASAR}\" && DISC_VER=\"\$(ls --sort=time --time=creation \"\${DISC_CONFIG}\" | grep -E -m 1 '^[0-9]+\\.[0-9]+\\.[0-9]+\$')\" && echo -e \"require('../../../../BetterDiscord/data/\${BD_ASAR}');\\nmodule.exports = require('./core.asar');\" | tee \"\${DISC_CONFIG}/\${DISC_VER}/modules/discord_desktop_core/index.js\" && echo -e \"\\nBetterDiscord installed. Restart Discord if currently running.\" || echo -e \"\\nInstallation failed.\""
-
 
