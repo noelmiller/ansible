@@ -79,13 +79,6 @@
         repo: "{{ item }}"
         dest: ~/.vim/bundle/{{ item.split('/')[-1] | regex_replace('\.git$') }}
 
-    - name: Clone bash-powerline repo
-      vars:
-        bash_powerline_dir: "~/.bash-powerline"
-      ansible.builtin.git: 
-        repo: "https://github.com/riobard/bash-powerline.git"
-        dest: "{{ bash_powerline_dir }}"
-
     - name: Ensure config files are copied
       loop: "{{ lookup('dict', config_files) }}"
       ansible.builtin.copy:
