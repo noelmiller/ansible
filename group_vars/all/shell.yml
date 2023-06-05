@@ -26,3 +26,7 @@ config_files:
   tmux:
     file: tmux.conf
     dest: ~/.tmux.conf
+
+  git:
+    file: gitconfig
+    dest: ~/.gitconfig
