@@ -64,6 +64,7 @@
           - net.lutris.Lutris
           - org.remmina.Remmina
           - org.mozilla.firefox
+          - com.github.tchx84.Flatseal
         state: present
         method: user
 
