@@ -1,0 +1,9 @@
+[user]
+name = Noel Miller
+email = noelmiller@protonmail.com
+
+[color]
+ui = true
+
+[core]
+pager = less -R
