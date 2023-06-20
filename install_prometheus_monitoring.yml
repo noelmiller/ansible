@@ -1,6 +1,6 @@
 ---
 - name: Install Prometheus Monitoring
-  hosts: all, !monitor
+  hosts: all, !monitor, !desktops
   become: true
   tasks:
     - name: Add repository
