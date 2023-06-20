@@ -8,13 +8,16 @@
 		"all-outputs": true,
 		"format": "{icon}",
 	 	"format-icons": {
-	 		"1:term": "󱄛 term",
-	 		"2:web": "󰈹 browser",
-	 		"3:code": "󰊢 code",
-			"4:chat": "󰙯 chat",
-	 		"5:music": "󰓇 spotify",
-			"6:games": "󰺷 games",
-	 		"7:docs": "󰏆 docs"
+	 		"1:term": "1 󱄛 term",
+	 		"2:web": "2 󰈹 browser",
+	 		"3:code": "3 󰊢 code",
+			"4:chat": "4 󰙯 chat",
+	 		"5:music": "5 󰓇 spotify",
+			"6:games": "6 󰺷 games",
+	 		"7:docs": "7 󰏆 docs",
+			"8:email": "8 󰇮 email",
+			"9:vault": "9 󰌆 vault",
+			"10:books": "10 󰂺 books"
 	},
      },
 	"clock": {
