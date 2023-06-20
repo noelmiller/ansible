@@ -21,6 +21,7 @@
           - flameshot
           - neofetch
           - telnet
+          - NetworkManager-tui
         state: present
 
     - name: Remove firefox
@@ -65,6 +66,8 @@
           - org.remmina.Remmina
           - org.mozilla.firefox
           - com.github.tchx84.Flatseal
+          - com.brave.Browser
+          - com.calibre_ebook.calibre
         state: present
         method: user
 
