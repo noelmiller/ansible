@@ -4,6 +4,9 @@ desktop_config_dir_list:
   - ~/.config/waybar
   - ~/.config/rofi
   - ~/.config/dunst
+  - ~/.config/swaylock
+  - ~/.config/sway/config.d
+  - ~/Pictures
 
 desktop_config_files:
   kitty:
@@ -30,3 +33,12 @@ desktop_config_files:
   dunst:
     file: dunstrc
     dest: ~/.config/dunst/dunstrc
+  swaylock:
+    file: swaylock.conf
+    dest: ~/.config/swaylock/config
+  sway_idle:
+    file: 90-swayidle.conf
+    dest: ~/.config/sway/config.d/90-swayidle.conf
+  wallpaper:
+    file: wallpaper.png
+    dest: ~/Pictures/wallpaper.png
