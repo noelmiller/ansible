@@ -5,8 +5,8 @@ host_firewall_ports:
   - "5001/tcp"
   - "5514/udp"
   - "6789/tcp"
-  - "6881/tcp"
-  - "6881/udp"
+  - "51000/tcp"
+  - "51000/udp"
   - "7878/tcp"
   - "8080/tcp"
   - "8081/tcp"
@@ -119,8 +119,8 @@ my_containers:
         PGID: 1010
       ports:
         - "8112:8112"
-        - "6881:6881"
-        - "6881:6881/udp"
+        - "51000:51000"
+        - "51000:51000/udp"
       volumes:
         - "{{ containers_directory }}/deluge/config:/config:Z"
         - "/data/files/Downloads:/downloads" 
