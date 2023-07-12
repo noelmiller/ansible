@@ -14,6 +14,8 @@ repo_list:
   - https://github.com/Raimondi/delimitMate.git
   - https://github.com/pearofducks/ansible-vim.git
   - https://github.com/tpope/vim-fugitive.git
+  - https://github.com/hashivim/vim-terraform.git
+  - https://github.com/gabrielelana/vim-markdown.git
 config_files:
   vim:
     file: vimrc
