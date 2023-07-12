@@ -19,7 +19,7 @@
         owner: root
         group: root
         mode: '0440'
-    - name: Allow user to have passwordless sudo
+    - name: Allow user to have password protected sudo
       loop: "{{ standard_users }}"
       when: item['sudo']
       ansible.builtin.lineinfile:
