@@ -34,15 +34,15 @@ my_bashrc: |
   export PS1='[\[\e[38;5;99m\]\u\[\e[0m\]@\[\e[38;5;178m\]\h\[\e[0m\]][\[\e[38;5;40m\]\w\[\e[0m\]]\[\e[38;5;99m\]$(git branch 2> /dev/null | sed -e '"'"'/^[^*]/d'"'"' -e '"'"'s/* \(.*\)/(\1)/'"'"')\[\e[0m\]\$ '
 
   # ===============================
-  # Ansible aliases (ansible-core)
+  # Ansible aliases (ansible-navigator)
   # ===============================
 
   alias anr="ansible-navigator run"
   alias ansc="ansible-navigator run --syntax-check"
   alias anc="ansible-navigator run --check"
-  alias acd="ansible-config dump"
+  alias acd="ansible-navigator config dump"
   alias av="ansible --version"
-  alias aig="ansible-inventory --graph"
+  alias aig="ansible-navigator inventory --graph"
 
   # ================
   # General aliases
@@ -51,5 +51,9 @@ my_bashrc: |
   # stop using scp
   alias scp="echo -e \nStop using scp\n\nSee https://www.redhat.com/en/blog/openssh-scp-deprecation-rhel-9-what-you-need-know"
   alias ls="exa"
+  # Update Better Discord Plugin
   alias betterdiscord-update="DISC_CONFIG=\"\$HOME/.var/app/com.discordapp.Discord/config/discord\" && BD_ASAR=betterdiscord.asar && wget --timestamping -P \"\${DISC_CONFIG}/../BetterDiscord/data\" -- \"https://github.com/BetterDiscord/BetterDiscord/releases/latest/download/\${BD_ASAR}\" && DISC_VER=\"\$(ls --sort=time --time=creation \"\${DISC_CONFIG}\" | grep -E -m 1 '^[0-9]+\\.[0-9]+\\.[0-9]+\$')\" && echo -e \"require('../../../../BetterDiscord/data/\${BD_ASAR}');\\nmodule.exports = require('./core.asar');\" | tee \"\${DISC_CONFIG}/\${DISC_VER}/modules/discord_desktop_core/index.js\" && echo -e \"\\nBetterDiscord installed. Restart Discord if currently running.\" || echo -e \"\\nInstallation failed.\""
+  # Managing Journal
+  alias jrnl-create="cp $HOME/Notes/templates/journal.md $HOME/Notes/journal/$(date +'%Y-%m-%d').md"
+  alias jrnl-edit="vim $HOME/Notes/journal/$(date +'%Y-%m-%d').md"
 
