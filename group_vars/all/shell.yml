@@ -16,6 +16,7 @@ repo_list:
   - https://github.com/tpope/vim-fugitive.git
   - https://github.com/hashivim/vim-terraform.git
   - https://github.com/gabrielelana/vim-markdown.git
+  - https://github.com/airblade/vim-gitgutter.git
 config_files:
   vim:
     file: vimrc
