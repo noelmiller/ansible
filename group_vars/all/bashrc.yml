@@ -56,4 +56,5 @@ my_bashrc: |
   # Managing Journal
   alias jrnl-create="cp $HOME/Notes/templates/journal.md $HOME/Notes/journal/$(date +'%Y-%m-%d').md"
   alias jrnl-edit="vim $HOME/Notes/journal/$(date +'%Y-%m-%d').md"
+  alias decomment='grep -v -E "^[[:space:]]*((#|;|//).*)?$" '
 
