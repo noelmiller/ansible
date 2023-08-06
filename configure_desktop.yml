@@ -49,7 +49,6 @@
         name:
           - com.discordapp.Discord
           - org.onlyoffice.desktopeditors
-          - md.obsidian.Obsidian
           - org.videolan.VLC
           - dev.goats.xivlauncher
           - com.valvesoftware.Steam
@@ -70,6 +69,7 @@
           - com.calibre_ebook.calibre
           - org.kde.okular
           - com.todoist.Todoist
+          - com.usebottles.bottles
         state: present
         method: user
 
