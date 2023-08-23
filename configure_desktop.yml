@@ -21,8 +21,10 @@
           - flameshot
           - neofetch
           - telnet
-          - NetworkManager-tui
+          - NetworkManager-tui 
+          - "https://github.com/TheAssassin/AppImageLauncher/releases/download/v2.2.0/appimagelauncher-2.2.0-travis995.0f91801.x86_64.rpm"
         state: present
+        disable_gpg_check: true
 
     - name: Remove firefox
       become_user: root
@@ -53,7 +55,6 @@
           - dev.goats.xivlauncher
           - com.valvesoftware.Steam
           - io.podman_desktop.PodmanDesktop
-          - im.riot.Riot
           - com.bitwarden.desktop
           - sh.ppy.osu
           - com.spotify.Client
@@ -73,16 +74,15 @@
         state: present
         method: user
 
-## MAY STILL NEED, Gonna try the flatpak first
-#   - name: Create Games Directory
-#     ansible.builtin.file:
-#       path: ~/Games
-#       state: directory
+    - name: Create Downloads Directory
+      ansible.builtin.file:
+        path: ~/Downloads
+        state: directory
 
-#   - name: Download OSU Lazer
-#     ansible.builtin.get_url:
-#       url: "https://github.com/ppy/osu/releases/latest/download/osu.AppImage"
-#       dest: ~/Games/osu.AppImage
+    - name: Download Beeper # Manual install will have to be done to intergrate into desktop search
+      ansible.builtin.get_url:
+        url: "https://download.beeper.com/linux/appImage/x64"
+        dest: ~/Downloads/
 
     - name: Create fonts directory
       ansible.builtin.file:
