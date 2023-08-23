@@ -1,7 +1,7 @@
 - name: Setup editing environment
-  hosts: all
+  hosts: "{{ my_host | default('all') }}"
   become: true
-  become_user: noel
+  become_user: "{{ my_user | default('noel') }}"
   tasks:
     - name: Install packages
       become_user: root
