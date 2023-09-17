@@ -23,6 +23,7 @@
           - telnet
           - NetworkManager-tui 
           - "https://github.com/TheAssassin/AppImageLauncher/releases/download/v2.2.0/appimagelauncher-2.2.0-travis995.0f91801.x86_64.rpm"
+          - screen
         state: present
         disable_gpg_check: true
 
@@ -71,6 +72,8 @@
           - org.kde.okular
           - com.todoist.Todoist
           - com.usebottles.bottles
+          - com.parsecgaming.parsec
+          - org.yuzu_emu.yuzu
         state: present
         method: user
 
