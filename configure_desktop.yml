@@ -24,6 +24,7 @@
           - NetworkManager-tui 
           - "https://github.com/TheAssassin/AppImageLauncher/releases/download/v2.2.0/appimagelauncher-2.2.0-travis995.0f91801.x86_64.rpm"
           - screen
+          - syncthing
         state: present
         disable_gpg_check: true
 
@@ -37,6 +38,13 @@
       become_user: root
       ansible.builtin.service:
         name: libvirtd
+        state: started
+        enabled: true
+
+    - name: Configure and enable syncthing
+      become_user: root
+      ansible.builtin.service:
+        name: syncthing@noel
         state: started
         enabled: true
 
