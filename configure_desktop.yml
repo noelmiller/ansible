@@ -13,7 +13,6 @@
           - flatpak
           - '@virtualization'
           - exa
-          - nextcloud-client
           - htop
           - podman
           - unzip
