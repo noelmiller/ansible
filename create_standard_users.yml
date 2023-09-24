@@ -37,11 +37,11 @@
       when: item['password'] is undefined
       ansible.builtin.user:
         name: "{{ item['name'] }}"
-        groups: "{{ item['groups'] }}"
+        groups: "{{ item['groups'] | default(omit) }}"
     - name: Create new user with password
       loop: "{{ standard_users }}"
       when: item['password'] is defined
       ansible.builtin.user:
         name: "{{ item['name'] }}"
-        groups: "{{ item['groups'] }}"
+        groups: "{{ item['groups'] | default(omit) }}"
         password: "{{ item['password'] | password_hash('sha512') }}"
