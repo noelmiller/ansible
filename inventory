@@ -2,7 +2,6 @@
 desktop.henrymillerfrazier.lan
 
 [appservers]
-nextcloud.henrymillerfrazier.lan
 plex02.henrymillerfrazier.lan
 git.henrymillerfrazier.lan
 containers.henrymillerfrazier.lan
@@ -22,6 +21,9 @@ monitor.henrymillerfrazier.lan
 
 [automation]
 ansible.henrymillerfrazier.lan
+
+[hypervisor_hosts]
+kvm.henrymillerfrazier.lan
 
 [automatic_updates:children]
 appservers
