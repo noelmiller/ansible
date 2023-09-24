@@ -16,19 +16,11 @@ standard_users:
     passwordless_sudo: false
     pubkeys: "{{ pubkeys }}"
   - name: ansible
-    groups:
-      - ansible
     sudo: false
     passwordless_sudo: true
+    # This is a specific key install on the ansible server
     pubkeys: |
-      ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAABgQCgPboMGs00UkrBaV8qCv4wGxEoBsypObaB6/amu4HyUh0FJFY3HlEzlHLrkQALM6JzsQfBug9B2OckYFbrNGhymsoanGU4JbN//i58e5qCskrf86wYTY1JmLV0tlqZ5vg0EICFZGbhTDI4fL1nNptGPjCAVAcw+YJkBGU0O/ib4hsFScPGiMVwVCbmAPxJ2B6a+VM5mX5WwZt8pQWJonj8OTOSCBDEY9DtkIJ3PkxSyJrq2gbe2evFbuuowRMppZdWPzow31a26nCpBhz0CSFJLTqJM7yYMIRtpyL8X+nrSkqu1PcXkTJK5vhx5L1b2UEr9ySu63jTAUiTRkSGIV5/wIbEyz/rALYE84jNonnjvmXA4zkzpWFFBn8W8SHOZC2Udkh8g/L4nboY+MykIrr2mPCO5rxjQy57oRMox2nfNLLO+OzOf4e0NEV4y7iQDAmOOGvnyJ9PRsDd7QpVKxt5RZuPXycEI4NJVbdBA9oJBG/jgjPaONnQugcH4OTKEis= root@ansible.henrymillerfrazier.lan
-  - name: veeam
-    groups:
-      - veeam
-    sudo: false
-    passwordless_sudo: true
-    pubkeys: |
-      ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAABgQDjEETsPc3bc7JIr76/ufIA37tNAFEzJHeNXO7TRBLCvFTOwkivJVw3+YZyfgz4VMRXM9KTQLo0CNAA5nr38L7bGZTijk5S3q0C+XIpuy3Ky+LvujkM4h4EEcrQXMR2jeGMo8dFelpL71x/Csq6jSB/Jfbh9AfhK9XcmuMQS2Z45/rkFEsjRSnePoRdZPnwgPRQ4pKDZ1WqUx78dkDpGlWv9MNGOFQZsWV81hFcXzebEir1R9E4JOYIss56dVivFpvFpmLyc/KlwSqXAa1EIQy9hgxpNlkZY3ICbElT2SCpTUtzvP6Ufc/rwZReXj+0whKz560aLhG1ezY3nLf4BKWmy2LQRptnoB8GKTwJRuo2Rqmk59Dn5WZI41rkz0mtPhPiDfomBmzBIqavl46qirBXvxE+VXHtrItfDXfOF9ma3MrmP+YJAeTlVJ+vhFo48pD1Z7iALR7OvDMFVL7Yz27J6AgprgEaatB4nSrycF01pGkxG0O43iyACMoY9JuFTR0= noelm@desktop
+      ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAABgQDP7cw7s685Rlj9Hw3/qqdS4ek6PtTBavjMyZQacbUUq/jTTaQFG/T3WecxzdYA9gBltEJZlKafqyWfcQotdbEZftqK2Y9jo8NKEz/lIQYzD828YPBNcVG68IPDHMJSerX/zZR0JB+S1U1lEY/GXdjoArXPl9t/9/o5mx+QX+W0W/gXAbcoCsqYVfJivruQayQGcI6K7k/ytitCcAdndhMn1QANSVLNKYCsYxrX+JW6nsFRWC2PBws9btJzADY5XfaLeAcN6iNNK6HCY1Bs5OJebpKOdz0+wcY4SVp1K6tqxcp/phBCwhv+uneMYwHZmUFmthLz6eNwbvil/JrRGU+WuwCUUCNxG0c2W3+t2PFI/gxprfKED9DLzHd95t3SQ2v4FZVOIEczdszWuEhvM5oAW/wGH3YH741PvcC3sGp6d0I+05lzm6BaNpwb8ERCYwEoXiDCshrmumxXFfXG3K/fuoEqGYFfJLvSKaejQUhEAuebhZ0vlRJ45sTO4mHS6Y8= noel@desktop.henrymillerfrazier.lan
 
 rhc_auth:
   activation_keys:
