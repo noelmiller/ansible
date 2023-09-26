@@ -7,7 +7,7 @@ my_containers:
   - name: proxy
     container_config:
       name: "proxy"
-      image: "jc21/nginx-proxy-manager:latest"
+      image: "docker.io/jc21/nginx-proxy-manager:latest"
       subuidname: "proxy"
       subgidname: "proxy"
       ports:
