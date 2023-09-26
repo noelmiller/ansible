@@ -5,14 +5,14 @@ desktop.henrymillerfrazier.lan
 plex02.henrymillerfrazier.lan
 git.henrymillerfrazier.lan
 containers.henrymillerfrazier.lan
-proxy02.henrymillerfrazier.lan
+proxy03.henrymillerfrazier.lan
 
 [container_hosts]
 containers.henrymillerfrazier.lan
-proxy02.henrymillerfrazier.lan
+proxy03.henrymillerfrazier.lan
 
 [infra]
-proxy02.henrymillerfrazier.lan
+proxy03.henrymillerfrazier.lan
 monitor.henrymillerfrazier.lan
 containers.henrymillerfrazier.lan
 satellite.henrymillerfrazier.lan
