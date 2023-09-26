@@ -1,5 +1,5 @@
 - name: Deploy Rootful Containers
-  hosts: containers.henrymillerfrazier.lan,proxy02.henrymillerfrazier.lan
+  hosts: container_hosts
   become: true
   gather_facts: false
   roles:

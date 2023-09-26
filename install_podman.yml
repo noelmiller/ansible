@@ -1,6 +1,6 @@
 ---
 - name: Install podman
-  hosts: containers.henrymillerfrazier.lan,proxy02.henrymillerfrazier.lan
+  hosts: container_hosts
   become: true
   tasks:
     - name: Set container_manage_cgroup on
@@ -8,38 +8,11 @@
         name: container_manage_cgroup
         state: true
         persistent: true
-    - name: Remove repository
-      notify: Yum Clean Metadata
-      ansible.builtin.yum_repository:
-        name: docker
-        state: absent
-    - name: Remove docker
-      ansible.builtin.yum:
-        name:
-          - docker-ce
-          - docker-ce-cli
-          - containerd.io
-        state: absent
     - name: Install podman
       ansible.builtin.yum:
         name:
           - podman
           - podman-docker
         state: present
-    - name: Upgrade PIP
-      ansible.builtin.pip:
-        name: pip
-        state: present
-    - name: Remove Docker Compose
-      ansible.builtin.pip:
-        name: docker-compose
-        state: absent
-    - name: Flush Handlers
-      ansible.builtin.meta: flush_handlers
     - name: Reboot server
       ansible.builtin.reboot:
-  handlers:
-    - name: Yum Clean Metadata
-      ansible.builtin.command: yum clean metadata
-      args:
-        warn: false
