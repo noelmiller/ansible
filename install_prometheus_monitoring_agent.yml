@@ -1,6 +1,6 @@
 ---
-- name: Install Prometheus Monitoring
-  hosts: all, !monitor, !desktops
+- name: Install Node Exporter
+  hosts: all, !desktops
   become: true
   tasks:
     - name: Add repository
@@ -13,26 +13,20 @@
           - "https://packagecloud.io/prometheus-rpm/release/gpgkey"
           - "https://raw.githubusercontent.com/lest/prometheus-rpm/master/RPM-GPG-KEY-prometheus-rpm"
         metadata_expire: 300
-    - name: Install Prometheus and Node Exporter
+    - name: Install Node Exporter
       ansible.builtin.yum:
-        name: 'prometheus2, node_exporter'
+        name: node_exporter
         state: present
-    - name: Copy Config
-      ansible.builtin.template:
-        src: prometheus_client.yml.j2
-        dest: /etc/prometheus/prometheus.yml
-        owner: root
-        group: root
-        mode: "0644"
-    - name: Enable Service (Prometheus and Node Exporter)
-      loop:
-        - prometheus.service
-        - node_exporter.service
+    - name: Remove Prometheus
+      ansible.builtin.yum:
+        name: prometheus2
+        state: absent
+    - name: Enable Service
       ansible.builtin.service:
         state: started
         daemon_reload: true
         enabled: true
-        name: "{{ item }}"
+        name: "node_exporter.service"
     - name: Update Firewall
       ansible.posix.firewalld:
         port: 9100/tcp
