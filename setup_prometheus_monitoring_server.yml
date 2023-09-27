@@ -13,9 +13,9 @@
           - "https://packagecloud.io/prometheus-rpm/release/gpgkey"
           - "https://raw.githubusercontent.com/lest/prometheus-rpm/master/RPM-GPG-KEY-prometheus-rpm"
         metadata_expire: 300
-    - name: Install Prometheus and Node Exporter
+    - name: Install Prometheus
       ansible.builtin.yum:
-        name: 'prometheus2'
+        name: prometheus2
         state: present
     - name: Enable Service (Prometheus)
       ansible.builtin.systemd:
@@ -31,7 +31,7 @@
         state: enabled
     - name: Add Inventory to Config File
       vars:
-        servers_to_monitor: "{{ groups['vms'] }}"
+        servers_to_monitor: "{{ groups['servers'] }}"
       ansible.builtin.template:
         src: prometheus_server.yml.j2
         dest: /etc/prometheus/prometheus.yml
