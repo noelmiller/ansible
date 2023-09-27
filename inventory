@@ -35,3 +35,7 @@ appservers
 infra
 automation
 container_hosts
+
+[servers:children]
+hypervisor_hosts
+vms
