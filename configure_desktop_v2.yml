@@ -1,0 +1,92 @@
+- name: Configure Desktop
+  hosts: desktop.henrymillerfrazier.lan
+  become: true
+  become_user: noel
+  gather_facts: false
+  tasks:
+    - name: Install RPM OSTree Packages
+      notify: Reboot Desktop
+      become_user: root
+      community.general.rpm_ostree_pkg:
+        name:
+          - kitty
+          - virt-manager
+          - htop
+          - neofetch
+          - NetworkManager-tui 
+          - syncthing
+          - cockpit
+          - python3-pip
+        state: present
+
+    - name: Configure flathub remote
+      community.general.flatpak_remote:
+        name: flathub
+        state: present
+        flatpakrepo_url: https://dl.flathub.org/repo/flathub.flatpakrepo
+        method: user
+
+    - name: Install flatpaks
+      community.general.flatpak:
+        name:
+          - com.discordapp.Discord
+          - org.onlyoffice.desktopeditors
+          - org.videolan.VLC
+          - dev.goats.xivlauncher
+          #- com.valvesoftware.Steam
+          - io.podman_desktop.PodmanDesktop
+          - com.bitwarden.desktop
+          - sh.ppy.osu
+          - com.spotify.Client
+          - tv.plex.PlexHTPC
+          - org.signal.Signal
+          - org.gimp.GIMP
+          #- net.lutris.Lutris
+          - org.remmina.Remmina
+          - com.github.tchx84.Flatseal
+          - com.google.Chrome
+          - com.calibre_ebook.calibre
+          - org.kde.okular
+          - com.todoist.Todoist
+          - com.usebottles.bottles
+          - com.parsecgaming.parsec
+          - org.yuzu_emu.yuzu
+          - com.mattjakeman.ExtensionManager
+          - org.DolphinEmu.dolphin-emu
+          - com.obsproject.Studio
+        state: present
+        method: user
+
+    - name: Create fonts directory
+      ansible.builtin.file:
+        path: ~/.local/share/fonts
+        state: directory
+
+    - name: Download FiraCode Fonts
+      ansible.builtin.unarchive:
+        src: "https://github.com/ryanoasis/nerd-fonts/releases/download/v3.0.1/FiraCode.tar.xz"
+        dest: "~/.local/share/fonts/"
+        remote_src: true
+
+    - name: Download Material Design Fonts
+      ansible.builtin.get_url:
+        url: "https://github.com/Templarian/MaterialDesign-Font/blob/master/MaterialDesignIconsDesktop.ttf"
+        dest: "~/.local/share/fonts/MaterialDesignIconsDesktop.ttf"
+        mode: "0644"
+
+    - name: Ensure needed directories are present
+      loop: "{{ desktop_config_dir_list_v2 }}"
+      ansible.builtin.file:
+        path: "{{ item }}"
+        state: directory
+        mode: "0755"
+
+    - name: Ensure config files are copied
+      loop: "{{ lookup('dict', desktop_config_files_v2) }}"
+      ansible.builtin.copy:
+        src: "{{ item['value']['file'] }}"
+        dest: "{{ item['value']['dest'] }}"
+
+  handlers:
+    - name: Reboot Desktop
+      ansible.builtin.reboot:

@@ -1,0 +1,19 @@
+- name: Configure Desktop
+  hosts: desktop.henrymillerfrazier.lan
+  become: true
+  become_user: noel
+  gather_facts: false
+  tasks:
+    - name: Configure and enable libvirtd
+      become_user: root
+      ansible.builtin.service:
+        name: libvirtd
+        state: started
+        enabled: true
+
+    - name: Configure and enable syncthing
+      become_user: root
+      ansible.builtin.service:
+        name: syncthing@noel
+        state: started
+        enabled: true

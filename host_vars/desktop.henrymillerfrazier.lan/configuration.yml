@@ -8,6 +8,10 @@ desktop_config_dir_list:
   - ~/.config/sway/config.d
   - ~/Pictures
 
+desktop_config_dir_list_v2:
+  - ~/.config/kitty
+  - ~/Pictures
+
 desktop_config_files:
   kitty:
     file: kitty.conf
@@ -39,6 +43,14 @@ desktop_config_files:
   sway_idle:
     file: 90-swayidle.conf
     dest: ~/.config/sway/config.d/90-swayidle.conf
+  wallpaper:
+    file: wallpaper.png
+    dest: ~/Pictures/wallpaper.png
+
+desktop_config_files_v2:
+  kitty:
+    file: kitty.conf
+    dest: ~/.config/kitty/kitty.conf
   wallpaper:
     file: wallpaper.png
     dest: ~/Pictures/wallpaper.png

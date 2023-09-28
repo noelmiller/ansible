@@ -4,6 +4,7 @@
   become: true
   tasks:
     - name: Install cockpit
+      when: ansible_facts['distribution'] == "RedHat"
       ansible.builtin.yum:
         name: cockpit
         state: present

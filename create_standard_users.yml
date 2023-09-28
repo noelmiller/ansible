@@ -1,6 +1,6 @@
 ---
 - name: Create standard users
-  hosts: all,!desktops
+  hosts: all
   become: true
   gather_facts: false
   vars_files:
