@@ -44,7 +44,7 @@
           #- net.lutris.Lutris
           - org.remmina.Remmina
           - com.github.tchx84.Flatseal
-          - com.google.Chrome
+          #- com.google.Chrome
           - com.calibre_ebook.calibre
           - org.kde.okular
           - com.todoist.Todoist
@@ -54,6 +54,7 @@
           - com.mattjakeman.ExtensionManager
           - org.DolphinEmu.dolphin-emu
           - com.obsproject.Studio
+          - org.mozilla.firefox
         state: present
         method: user
 
