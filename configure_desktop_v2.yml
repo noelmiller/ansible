@@ -4,6 +4,12 @@
   become_user: noel
   gather_facts: false
   tasks:
+    - name: Add VSCode Repo
+      become_user: root
+      ansible.builtin.copy:
+        src: vscode.repo
+        dest: /etc/yum.repos.d/vscode.repo
+
     - name: Install RPM OSTree Packages
       notify: Reboot Desktop
       become_user: root
@@ -14,9 +20,11 @@
           - virt-install
           - htop
           - neofetch
-          - NetworkManager-tui 
+          - NetworkManager-tui
           - syncthing
           - cockpit
+          - python3-pip
+          - code # vscode
         state: present
 
     - name: Configure flathub remote
