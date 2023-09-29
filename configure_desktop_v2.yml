@@ -11,12 +11,12 @@
         name:
           - kitty
           - virt-manager
+          - virt-install
           - htop
           - neofetch
           - NetworkManager-tui 
           - syncthing
           - cockpit
-          - python3-pip
         state: present
 
     - name: Configure flathub remote
