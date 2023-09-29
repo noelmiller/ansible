@@ -11,6 +11,11 @@
         state: started
         enabled: true
 
+# Figure out an idempotent way to do this.
+#    - name: Fix Libvirt Group Mapping
+#      become_user: root
+#      ansible.builtin.command: grep -E '^libvirt:' /usr/lib/group >> /etc/group
+
     - name: Configure and enable syncthing
       become_user: root
       ansible.builtin.service:
