@@ -18,6 +18,7 @@
           - kitty
           - virt-manager
           - virt-install
+          - virt-viewer
           - htop
           - neofetch
           - NetworkManager-tui
